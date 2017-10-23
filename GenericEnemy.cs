@@ -53,7 +53,7 @@ public class GenericEnemy : MonoBehaviour {
 	/// Target object should be warned before being attacked
 	/// </summary>
 	protected bool warnTarget = false;
-	protected float warnDist = 2f;
+	protected float warnDist = 2.75f;
 	protected float warnLowerTimer = 0f;
 	/// <summary>
 	/// Object falsely believed to be player (used to throw off enemy)
@@ -90,6 +90,10 @@ public class GenericEnemy : MonoBehaviour {
 
 	public float recentlyInjuredTimer = 0f;
 
+	public bool canHide = false;
+	protected float hideTimer = 0f;
+	public  bool hiding = false;
+
 	public void Start(){
 		
 	}
@@ -100,6 +104,11 @@ public class GenericEnemy : MonoBehaviour {
 
 	// Heats/ignites an object
 	public virtual void Heat(){
+
+	}
+
+	// Hides an object in a wall/barrier
+	public virtual void Hide(int dir){
 
 	}
 
@@ -422,6 +431,14 @@ public class GenericEnemy : MonoBehaviour {
 	}
 
 	public virtual bool IsHidden(){
+		return false;
+	}
+
+	// Locks the door it controls if the entrant is of lower rank or aggressive
+	public virtual bool DoorLocked(){
+		if (alerted || warnTarget){
+			return true;
+		}
 		return false;
 	}
 

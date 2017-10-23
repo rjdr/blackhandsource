@@ -28,6 +28,8 @@ public class MissionText : MonoBehaviour {
 	void Start () {
 		BlackUp = transform.Find("BlackUp");
 		BlackDown = transform.Find("BlackDown");
+		BlackUp.GetComponent<UnityEngine.UI.Image>().color = new Color(0f, 0f, 0f, 1f);
+		BlackDown.GetComponent<UnityEngine.UI.Image>().color = new Color(0f, 0f, 0f, 1f);
 		Container = transform.Find("Container");
 		BarUp = Container.Find("BarUp");
 		BarDown = Container.Find("BarDown");

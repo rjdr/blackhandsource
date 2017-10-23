@@ -46,7 +46,8 @@ public class FastText : MonoBehaviour {
 	/// </summary>
 	public void SetPosition(float x, float y){
 		text = transform.Find("Text").GetComponent<Text>();
-		text.rectTransform.position = new Vector3(x + 640f, y + 400f, 0f);
+		float scale = transform.GetComponent<RectTransform>().localScale.x;
+		text.rectTransform.position = new Vector3(x * scale + 640f * scale, y * scale + 400f * scale, 0f);
 	}
 
 	// Sets the font size
@@ -77,7 +78,8 @@ public class FastText : MonoBehaviour {
 				text.text = (string)texts[0];
 				texts.RemoveAt(0);
 				if (cascading){
-					text.rectTransform.position += new Vector3(0f, -70f, 0f);
+					float scale = transform.GetComponent<RectTransform>().localScale.x;
+					text.rectTransform.position += new Vector3(0f, -70f * scale, 0f);
 				}
 				if (increaseSize){
 					text.fontSize += 50;

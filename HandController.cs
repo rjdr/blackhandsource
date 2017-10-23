@@ -931,6 +931,10 @@ public class HandController : GenericEnemy {
 	
 	// Launches a hand towards object to grab it
 	public void ActivateGrab(Vector3 pointIn){
+		// Ignores a grab if currently in possession mode
+		if (m_Anim.GetBool("Possessing")){
+			return;
+		}
 		int bgLayer = LayerMask.NameToLayer("BackgroundLayer");
 		int fgLayer = LayerMask.NameToLayer("ForegroundOnly");
 		int defaultLayer = LayerMask.NameToLayer("Default");
@@ -1400,6 +1404,10 @@ public class HandController : GenericEnemy {
 	// Possesses a human
 	// Instead of directly possessing objects, we'll first pull towards it then activate the possession sequence
 	public void PossessHuman(){
+		// Can't be triggered again if currently in the process of possessing 
+		if (m_Anim.GetBool("Possessing")){
+			return;
+		}
 		Transform target = selectedTarget;
 		NormalTime();
 		SetAttackMenuStatus(false);

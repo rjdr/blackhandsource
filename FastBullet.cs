@@ -3,7 +3,7 @@ using System.Collections;
 
 public class FastBullet : Weapon {
 	float speed = 36f;
-	float damageVal = 3f;
+	public float damageVal = 5f;
 	bool destroyed = false;
 	float timer = 9f;
 	// Use this for initialization

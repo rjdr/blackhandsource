@@ -106,7 +106,10 @@ public class Chandelier : GenericEnemy {
 			} else if (col.gameObject.GetComponent<PossessableScript>()){
 				col.gameObject.GetComponent<PossessableScript>().DelayedDamage(((int) damageVal));
 			}
-			destroyed = true;
+			// Not destroyed when hit by a bullet
+			if (col.gameObject.GetComponent<Weapon>() == null && col.gameObject.GetComponent<NetWeapon>() == null){
+				destroyed = true;
+			}
 		}
 	}
 }

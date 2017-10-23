@@ -163,6 +163,17 @@ public class NetworkSoldier : NetworkGenericEnemy {
 	float jumpVel = 9.25f;
 	public Vector2 currentVel;
 
+	// For stabbing enemies
+	bool stabbing = false;
+	float stabTimer = 0f;
+	float maxStabTimer = 3f; 	// How long we need to wait between stabs
+	bool stabDamaging = false; 	// Stab is currently in a damaging phase
+	float stabDamage = 4f;
+
+	// For tossing grenades
+	float tossGrenadeTimer = 0f;
+	float maxTossGrenadeTimer = 8f;
+
 	// Actions to take when starting
 	public override void OnStartLocalPlayer(){
 		//GetComponent<MeshRenderer>().material.color = Color.red;
@@ -337,6 +348,28 @@ public class NetworkSoldier : NetworkGenericEnemy {
 		base.Depossess();
 		StopAiming();
 		gunPivot.GetComponent<SpriteRenderer>().sprite = gunPivotImg;
+	}
+
+	// Tosses a grenade
+	public void TossGrenade(){
+		if (tossGrenadeTimer > maxTossGrenadeTimer){
+			// Toss grenade
+			m_Anim.SetBool("Toss", true);
+		}
+	}
+
+	// Stabs when an enemy is too close to shoot
+	public void ActivateStab(){
+		if (stabTimer >= maxStabTimer){
+			stabTimer = 0f;
+			bool stabbing = true;
+			m_Anim.SetBool("Stab", true);
+		}
+	}
+
+	// Stabs when an enemy is too close to shoot
+	public void Stab(){
+
 	}
 
 	// Starts aiming if gun isn't already out
@@ -1320,6 +1353,8 @@ public class NetworkSoldier : NetworkGenericEnemy {
 			}
 		}
 		ClimbLadder();
+
+		stabTimer += Time.deltaTime;
 	}
 
 	public override void StopClimbingLadder(){
@@ -1446,7 +1481,17 @@ public class NetworkSoldier : NetworkGenericEnemy {
 		transform.localScale = theScale;
 	}
 
-
+	// Triggers the stab attack with enemies
+	public override void ChildTriggerStayed(GameObject child, GameObject hit){
+		if (stabDamaging){
+			if (hit.GetComponent<GenericEnemy>()){
+				hit.GetComponent<GenericEnemy>().DelayedDamage(stabDamage);
+			}
+		}
+		if (child.name == "FreeClimbSpace" && (hit == targetObject || (hit.transform.parent != null && hit.transform.parent.gameObject == targetObject))){
+			ActivateStab();
+		}
+	}
 
 	// Check if it came in contact with the player
 	void OnTriggerEnter2D(Collider2D col){

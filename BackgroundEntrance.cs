@@ -29,9 +29,7 @@ public class BackgroundEntrance : GenericEnemy {
 
 	// Swap between the background and foreground
 	public override void ChildTriggerStayed(GameObject child, GameObject hit){
-		print("hit");
 		if (Input.GetKeyDown(KeyBindings.w) && hit.tag == "Player"){
-			print("switch");
 			hit.GetComponent<HandController>().SwapPlanes(transitionDistance);
 		}
 	}
